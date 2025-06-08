@@ -355,16 +355,6 @@ def render_chat_history(chat_history, language):
                     escaped_content = message["content"].replace('"', '\\"').replace("'", "\\'")
                     st.write(f'<script>navigator.clipboard.writeText("{escaped_content}")</script>', unsafe_allow_html=True)
                     st.success("Copied!")
-                if st.button("🔊", key=f"tts_{message['timestamp']}", help="Read message", use_container_width=True):
-                    escaped_text = message["content"].replace('"', '\\"').replace("'", "\\'")
-                    st.markdown(f"""
-                    <script>
-                        var msg = new SpeechSynthesisUtterance();
-                        msg.text = "{escaped_text}";
-                        msg.lang = "{'hi-IN' if language == 'Hindi' else 'en-US'}";
-                        window.speechSynthesis.speak(msg);
-                    </script>
-                    """, unsafe_allow_html=True)
     
     st.markdown('</div>', unsafe_allow_html=True)
 

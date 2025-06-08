@@ -13,20 +13,8 @@ google-generativeai==0.3.2
 # Embeddings & Vector Store
 faiss-cpu==1.7.4
 
-# Audio input support
-streamlit-audiorecorder==0.0.6
-SpeechRecognition==3.10.1
-pydub==0.25.1
-
-# Audio conversion (ffmpeg is also required on system)
-ffmpeg-python==0.2.0
-
 # Image support
 Pillow==9.5.0
-
-# Voice features
-gTTS==2.5.1
-PyAudio==0.2.14
 
 # Added from the code block
 sentence-transformers==2.5.1
