@@ -1,0 +1,33 @@
+# Core App
+streamlit==1.32.0
+python-dotenv==1.0.1
+
+# PDF Reading
+PyPDF2==3.0.1
+
+# LangChain & Google Gemini
+langchain==0.1.12
+langchain-community==0.0.27
+google-generativeai==0.3.2
+
+# Embeddings & Vector Store
+faiss-cpu==1.7.4
+
+# Audio input support
+streamlit-audiorecorder==0.1.5
+SpeechRecognition==3.10.1
+pydub==0.25.1
+
+# Audio conversion (ffmpeg is also required on system)
+ffmpeg-python==0.2.0
+
+# Image support
+Pillow==10.2.0
+
+# Voice features
+gTTS==2.5.1
+PyAudio==0.2.14
+
+# Added from the code block
+sentence-transformers==2.5.1
+pypdf==4.1.0
