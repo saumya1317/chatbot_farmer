@@ -7,14 +7,14 @@ PyPDF2==3.0.1
 
 # LangChain & Google Gemini
 langchain==0.1.12
-langchain-community==0.0.27
+langchain-community>=0.0.28,<0.1
 google-generativeai==0.3.2
 
 # Embeddings & Vector Store
 faiss-cpu==1.7.4
 
 # Audio input support
-streamlit-audiorecorder==0.1.5
+streamlit-audiorecorder==0.0.6
 SpeechRecognition==3.10.1
 pydub==0.25.1
 
@@ -31,3 +31,6 @@ PyAudio==0.2.14
 # Added from the code block
 sentence-transformers==2.5.1
 pypdf==4.1.0
+
+# Added from the code block
+python-multipart==0.0.9
