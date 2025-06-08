@@ -146,9 +146,9 @@ def get_plant_analysis(image_base64, language="English"):
         model = genai.GenerativeModel('gemini-1.5-flash')
         image_parts = [{"mime_type": "image/jpeg", "data": image_base64}]
         
-        prompt = "Analyze this plant/leaf image and identify any diseases or issues. Provide detailed information about the condition and suggest sustainable treatment methods. Format the response in a clear, structured way."
+        prompt = "Analyze this plant/leaf image and identify any diseases or issues. Provide detailed information about the condition and suggest sustainable treatment methods. Format the response in a clear, structured way. Always focus on sustainable farming practices. Begin your answer with: 'Hello Kisaan 👨‍🌾'"
         if language == "Hindi":
-            prompt = "इस पौधे/पत्ती की छवि का विश्लेषण करें और किसी भी बीमारी या समस्या की पहचान करें। स्थिति के बारे में विस्तृत जानकारी दें और स्थायी उपचार विधियों का सुझाव दें। प्रतिक्रिया को स्पष्ट, संरचित तरीके से प्रारूपित करें।"
+            prompt = "इस पौधे/पत्ती की छवि का विश्लेषण करें और किसी भी बीमारी या समस्या की पहचान करें। स्थिति के बारे में विस्तृत जानकारी दें और स्थायी उपचार विधियों का सुझाव दें। प्रतिक्रिया को स्पष्ट, संरचित तरीके से प्रारूपित करें। हमेशा टिकाऊ कृषि पद्धतियों पर ध्यान केंद्रित करें। अपने उत्तर की शुरुआत करें: 'नमस्ते किसान 👨‍🌾'"
         
         response = model.generate_content([prompt, *image_parts])
         return response.text
@@ -156,7 +156,7 @@ def get_plant_analysis(image_base64, language="English"):
         return handle_api_error(e)
 
 def get_farming_advice(query, vector_store, language="English"):
-    """Get farming advice using the conversational chain"""
+    """Get farming advice using the conversational chain, always focusing on sustainable farming and greeting the farmer."""
     try:
         # Initialize the language model
         llm = GooglePalm(google_api_key=GOOGLE_API_KEY, temperature=0.7)
@@ -175,8 +175,13 @@ def get_farming_advice(query, vector_store, language="English"):
             verbose=True
         )
         
+        # Add system prompt for sustainability and greeting
+        system_prompt = "You are an expert in sustainable farming. Always provide answers that are relevant to sustainable agriculture. Begin every answer with: 'Hello Kisaan 👨‍🌾' and then answer the question."
+        if language == "Hindi":
+            system_prompt = "आप स्थायी कृषि के विशेषज्ञ हैं। हमेशा ऐसे उत्तर दें जो स्थायी कृषि से संबंधित हों। हर उत्तर की शुरुआत करें: 'नमस्ते किसान 👨‍🌾' और फिर प्रश्न का उत्तर दें।"
+        
         # Get response
-        response = chain({"question": query})
+        response = chain({"question": f"{system_prompt}\n{query}"})
         return response['answer']
     except Exception as e:
         return handle_api_error(e)
@@ -196,6 +201,13 @@ def handle_submit(user_query, uploaded_image, vector_store, language):
             
             # Get and add analysis
             analysis = get_plant_analysis(image_base64, language)
+            # Prepend greeting if not present
+            if language == "Hindi":
+                if not analysis.strip().startswith("नमस्ते किसान"):
+                    analysis = f"नमस्ते किसान 👨‍🌾\n" + analysis
+            else:
+                if not analysis.strip().startswith("Hello Kisaan"):
+                    analysis = f"Hello Kisaan 👨‍🌾\n" + analysis
             st.session_state.chat_history.append({
                 "role": "assistant",
                 "content": analysis,
@@ -217,10 +229,19 @@ def handle_submit(user_query, uploaded_image, vector_store, language):
             # If no PDF is uploaded, use Gemini Pro directly
             try:
                 model = genai.GenerativeModel('gemini-1.5-flash')
-                response = model.generate_content(user_query).text
+                prompt = "You are an expert in sustainable farming. Always provide answers that are relevant to sustainable agriculture. Begin every answer with: 'Hello Kisaan 👨‍🌾' and then answer the question. "
+                if language == "Hindi":
+                    prompt = "आप स्थायी कृषि के विशेषज्ञ हैं। हमेशा ऐसे उत्तर दें जो स्थायी कृषि से संबंधित हों। हर उत्तर की शुरुआत करें: 'नमस्ते किसान 👨‍🌾' और फिर प्रश्न का उत्तर दें। "
+                response = model.generate_content(f"{prompt}\n{user_query}").text
             except Exception as e:
                 response = handle_api_error(e)
-        
+        # Prepend greeting if not present
+        if language == "Hindi":
+            if not response.strip().startswith("नमस्ते किसान"):
+                response = f"नमस्ते किसान 👨‍🌾\n" + response
+        else:
+            if not response.strip().startswith("Hello Kisaan"):
+                response = f"Hello Kisaan 👨‍🌾\n" + response
         st.session_state.chat_history.append({
             "role": "assistant",
             "content": response,
