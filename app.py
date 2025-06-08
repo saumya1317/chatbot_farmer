@@ -1,7 +1,7 @@
 import streamlit as st
 import os
 from dotenv import load_dotenv
-from langchain_community.vectorstores import FAISS
+from langchain_community.vectorstores import Chroma
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.document_loaders import PyPDFLoader
 from langchain_community.embeddings import HuggingFaceEmbeddings
@@ -117,7 +117,7 @@ def process_pdf(uploaded_file):
         
         # Create embeddings and vector store
         embeddings = HuggingFaceEmbeddings()
-        vector_store = FAISS.from_documents(chunks, embeddings)
+        vector_store = Chroma.from_documents(chunks, embeddings)
         
         # Clean up temporary file
         os.remove("temp.pdf")

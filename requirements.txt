@@ -10,8 +10,8 @@ langchain==0.1.12
 langchain-community>=0.0.28,<0.1
 google-generativeai==0.3.2
 
-# Embeddings & Vector Store
-faiss-cpu==1.7.3
+# Vector Store
+chromadb==0.4.24
 
 # Image support
 Pillow==10.0.0
