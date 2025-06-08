@@ -22,7 +22,7 @@ pydub==0.25.1
 ffmpeg-python==0.2.0
 
 # Image support
-Pillow==10.1.0
+Pillow==9.5.0
 
 # Voice features
 gTTS==2.5.1
