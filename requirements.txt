@@ -22,7 +22,7 @@ pydub==0.25.1
 ffmpeg-python==0.2.0
 
 # Image support
-Pillow==10.2.0
+Pillow==10.1.0
 
 # Voice features
 gTTS==2.5.1
@@ -34,3 +34,8 @@ pypdf==4.1.0
 
 # Added from the code block
 python-multipart==0.0.9
+
+# Added from the code block
+numpy>=1.24.0
+torch>=2.0.0
+transformers>=4.30.0
